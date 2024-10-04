@@ -1,0 +1,32 @@
+{
+	"schemaVersion": 1,
+	"id": "betterbundleui",
+	"version": "${version}",
+	"name": "BetterBundleUI",
+	"description": "Improves the bundle ui by increasing the size and improving navigation",
+	"authors": [
+		"Drex"
+	],
+	"license": "MIT",
+	"icon": "assets/betterbundleui/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"me.drex.betterbundleui.BetterBundleUI"
+		],
+		"client": [
+			"me.drex.betterbundleui.BetterBundleUIClient"
+		]
+	},
+	"mixins": [
+		"betterbundleui.mixins.json",
+		{
+			"config": "betterbundleui.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.16.5",
+		"java": ">=21"
+	}
+}

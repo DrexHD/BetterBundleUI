@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "me.drex.betterbundleui.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "BundleContentsMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+	}
+}
