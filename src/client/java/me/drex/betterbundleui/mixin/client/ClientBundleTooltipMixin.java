@@ -7,13 +7,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.component.BundleContents;
 import org.apache.commons.lang3.math.Fraction;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static me.drex.betterbundleui.BetterBundleUI.getColumns;
 
@@ -24,9 +23,18 @@ public abstract class ClientBundleTooltipMixin {
     @Final
     private BundleContents contents;
 
+    @Mutable
     @Shadow
     @Final
     private static int SLOT_SIZE;
+
+    @Inject(
+        method = "<clinit>",
+        at = @At("RETURN")
+    )
+    private static void changeSlotSize(CallbackInfo ci) {
+        SLOT_SIZE = 18;
+    }
 
     @ModifyConstant(
         method = {
@@ -92,6 +100,21 @@ public abstract class ClientBundleTooltipMixin {
         return (getColumns(contents.size()) * SLOT_SIZE) - 2;
     }
 
+    @ModifyConstant(
+        method = "*",
+        constant = @Constant(intValue = 24)
+    )
+    public int changeSlotSize(final int constant) {
+        return SLOT_SIZE;
+    }
+
+    @ModifyConstant(
+        method = "renderSlot",
+        constant = @Constant(intValue = 4)
+    )
+    public int changeSlotSize2(final int constant) {
+        return 1;
+    }
 
     @ModifyReturnValue(
         method = "getProgressBarFillText",
