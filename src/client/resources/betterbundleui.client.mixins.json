@@ -3,6 +3,7 @@
   "package": "me.drex.betterbundleui.mixin.client",
   "compatibilityLevel": "JAVA_21",
   "client": [
+    "BundleMouseActionsMixin",
     "ClientBundleTooltipMixin"
   ],
   "injectors": {
