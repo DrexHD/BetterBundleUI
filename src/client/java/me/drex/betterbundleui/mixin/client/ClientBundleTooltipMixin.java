@@ -1,12 +1,17 @@
 package me.drex.betterbundleui.mixin.client;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientBundleTooltip;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.component.BundleContents;
+import org.apache.commons.lang3.math.Fraction;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
@@ -87,5 +92,23 @@ public abstract class ClientBundleTooltipMixin {
         return (getColumns(contents.size()) * SLOT_SIZE) - 2;
     }
 
+
+    @ModifyReturnValue(
+        method = "getProgressBarFillText",
+        at = @At("RETURN")
+    )
+    public Component addFractionText(Component original) {
+        if (original == null) {
+            Fraction fraction = this.contents.weight();
+            if (Mth.isPowerOfTwo(fraction.getDenominator())) {
+                // If the denominator is not a power of two the bundle contains stack(s) with weird max stack sizes
+                // which will cause crazy fractions, which are not useful for the end user
+                int multiplier = Math.max(1, 64 / fraction.getDenominator());
+                return Component.literal("%d / %d".formatted(multiplier * fraction.getNumerator(), multiplier * fraction.getDenominator()));
+            }
+
+        }
+        return original;
+    }
 
 }
