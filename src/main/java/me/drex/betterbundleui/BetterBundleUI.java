@@ -7,12 +7,19 @@ import org.slf4j.LoggerFactory;
 
 public class BetterBundleUI implements ModInitializer {
 
-    public static int ROWS = 8;
-    public static int COLUMNS = 8;
     public static final Logger LOGGER = LoggerFactory.getLogger("betterbundleui");
 
     @Override
     public void onInitialize() {
+    }
+
+    public static int getRows(int itemCount) {
+        int columns = getColumns(itemCount);
+        return Mth.positiveCeilDiv(itemCount, columns);
+    }
+
+    public static int getColumns(int itemCount) {
+        return Math.max(4, Mth.ceil(Mth.sqrt(itemCount)));
     }
 
 }

@@ -3,8 +3,7 @@
   "package": "me.drex.betterbundleui.mixin.client",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "ClientBundleTooltipMixin",
-    "ExampleClientMixin"
+    "ClientBundleTooltipMixin"
   ],
   "injectors": {
     "defaultRequire": 1
